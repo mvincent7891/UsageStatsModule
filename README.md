@@ -49,7 +49,7 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
 
 ## AndroidManifest.xml
 + Add permissions
-```java
+```xml
 // android/app/src/main/AndroidManifest.xml
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
