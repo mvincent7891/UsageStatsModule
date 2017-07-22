@@ -21,12 +21,17 @@ Environment and sample application were setup using the React Native tutorial [h
 + Add permissions
 ```java
 // android/app/src/main/AndroidManifest.xml
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"  // Remember this, too!
+
+...
 
 <uses-permission
     android:name="android.permission.PACKAGE_USAGE_STATS"
     tools:ignore="ProtectedPermissions" />
+
+...
 ```
 
 # Todo
