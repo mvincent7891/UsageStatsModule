@@ -1,6 +1,6 @@
 package com.sampleapp;
 
-import com.gnothimobile.packages.*;
+import com.sampleapp.packages.*;
 
 import com.facebook.react.ReactActivity;
 import java.util.Arrays;
