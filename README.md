@@ -50,11 +50,13 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
 ## AndroidManifest.xml
 + Add permissions
 ```xml
-// android/app/src/main/AndroidManifest.xml
+<!---android/app/src/main/AndroidManifest.xml--->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"  // Remember this, too!
-
+    xmlns:tools="http://schemas.android.com/tools"
+    ...
+    />
+    
 ...
 
 <uses-permission
@@ -62,6 +64,7 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     tools:ignore="ProtectedPermissions" />
 
 ...
+
 ```
 
 # Todo
