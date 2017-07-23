@@ -171,4 +171,11 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
         Toast.makeText(getReactApplicationContext(), error, duration).show();
       }
     }
+
+  @ReactMethod
+  public void testToast(
+    int duration) {
+      String test = "It works!";
+      Toast.makeText(getReactApplicationContext(), test, duration).show();
+    }
 }

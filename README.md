@@ -130,7 +130,7 @@ protected void onCreate(Bundle savedInstanceState) {
 ...
 
 ```
-Finally, the above won't be helpful unless we've add the necessities to our manifest...
+Next, the above won't be helpful unless we've add the necessities to our manifest...
 
 ## AndroidManifest.xml
 ```xml
@@ -150,15 +150,38 @@ Finally, the above won't be helpful unless we've add the necessities to our mani
 ...
 
 ```
+## Import Native Modules in JS
+To make sure you've got the plumbing correct, let's import the module within a JavaScript file and test it out:
+```JavaScript
+// /index.android.js
+
+import { NativeModules } from 'react-native';
+const UsageStats = NativeModules.UsageStats;
+
+...
+
+export default class SampleApp extends Component {
+  render() {
+
+    UsageStats.testToast(UsageStats.SHORT);
+
+    return (
+      ...
+    );
+  }
+}
+
+```
+Start up an emulator and run `react-native run-android` from a terminal. I use [Genymotion](https://www.genymotion.com/account/login/). If everything is working properly, you should see a toast with the message, 'It works!' when the app starts up. 
 
 # Todo
 - [X] Add module
 - [X] Add basic module setup instructions
 - [ ] Add methods to UsageStatsModule
-    + [ ] getRange()
-    + [ ] getPastDay()
-    + [ ] getPastWeek()
-    + [ ] getPastMonth()
+    + [ ] getRangeStats()
+    + [ ] getPastDayStats()
+    + [ ] getPastWeekStats()
+    + [ ] getPastMonthStats()
 - [ ] Add example method calls
 - [ ] Enable sample method calls from React Native app
 - [ ] Add sample React Native application using module
