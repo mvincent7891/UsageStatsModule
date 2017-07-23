@@ -104,6 +104,12 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     calendar.add(field, amount);
     long startTime = calendar.getTimeInMillis();
 
+
+    // TESTING 1 2 3...
+    SimpleDateFormat formatOne = new SimpleDateFormat("yyyy-MM-dd");
+    String dateOne = formatOne.format(startTime);
+    Toast.makeText(getReactApplicationContext(), dateOne, Toast.LENGTH_SHORT).show();
+
     dates.add(startTime);
     dates.add(endTime);
 
@@ -193,6 +199,8 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     Callback successCallback) {
       try {
         String stats = getStatsString(getAggregateStatsMap(getReactApplicationContext()));
+
+        List dates = getPastDayDates();
         successCallback.invoke(stats);
       } catch (Exception e) {
         String errorMessage = e.getMessage();
