@@ -73,13 +73,13 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     }
   }
 
-  public List getDates(int durationInDays){
+  public static List getDates(int durationInDays){
     List dates = getDateRangeFromNow(Calendar.DATE, -(durationInDays));
 
     return dates;
   }
 
-  public List getDateRangeFromNow(int field, int amount){
+  public static List getDateRangeFromNow(int field, int amount){
   // public static List getDateRangeFromNow(int field, int amount){
     List dates = new ArrayList();
     Calendar calendar = Calendar.getInstance();
@@ -89,11 +89,11 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
 
 
     // TESTING 1 2 3...
-    SimpleDateFormat formatOne = new SimpleDateFormat("yyyy-MM-dd");
-    String dateOne = formatOne.format(startTime);
-    String dateTwo = formatOne.format(endTime);
-    Toast.makeText(getReactApplicationContext(), dateOne, Toast.LENGTH_SHORT).show();
-    Toast.makeText(getReactApplicationContext(), dateTwo, Toast.LENGTH_SHORT).show();
+    // SimpleDateFormat formatOne = new SimpleDateFormat("yyyy-MM-dd");
+    // String dateOne = formatOne.format(startTime);
+    // String dateTwo = formatOne.format(endTime);
+    // Toast.makeText(getReactApplicationContext(), dateOne, Toast.LENGTH_SHORT).show();
+    // Toast.makeText(getReactApplicationContext(), dateTwo, Toast.LENGTH_SHORT).show();
 
     dates.add(startTime);
     dates.add(endTime);
@@ -101,26 +101,30 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     return dates;
   }
 
-  public static List<UsageStats> getUsageStatsList(Context context){
+  // public static List<UsageStats> getUsageStatsList(Context context){
+  //   UsageStatsManager usm = getUsageStatsManager(context);
+  //   Calendar calendar = Calendar.getInstance();
+  //   long endTime = calendar.getTimeInMillis();
+  //   calendar.add(Calendar.YEAR, -1);
+  //   long startTime = calendar.getTimeInMillis();
+  //
+  //   Log.d(TAG, "Range start:" + dateFormat.format(startTime) );
+  //   Log.d(TAG, "Range end:" + dateFormat.format(endTime));
+  //
+  //   List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,startTime,endTime);
+  //   return usageStatsList;
+  // }
+
+  public static Map<String, UsageStats> getAggregateStatsMap(Context context, int durationInDays){
     UsageStatsManager usm = getUsageStatsManager(context);
-    Calendar calendar = Calendar.getInstance();
-    long endTime = calendar.getTimeInMillis();
-    calendar.add(Calendar.YEAR, -1);
-    long startTime = calendar.getTimeInMillis();
+    // Calendar calendar = Calendar.getInstance();
+    // long endTime = calendar.getTimeInMillis();
+    // calendar.add(Calendar.YEAR, -1);
+    // long startTime = calendar.getTimeInMillis();
 
-    Log.d(TAG, "Range start:" + dateFormat.format(startTime) );
-    Log.d(TAG, "Range end:" + dateFormat.format(endTime));
-
-    List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,startTime,endTime);
-    return usageStatsList;
-  }
-
-  public static Map<String, UsageStats> getAggregateStatsMap(Context context){
-    UsageStatsManager usm = getUsageStatsManager(context);
-    Calendar calendar = Calendar.getInstance();
-    long endTime = calendar.getTimeInMillis();
-    calendar.add(Calendar.YEAR, -1);
-    long startTime = calendar.getTimeInMillis();
+    List dates = getDates(durationInDays);
+    long startTime = (long)dates.get(0);
+    long endTime = (long)dates.get(1);
 
     Map<String, UsageStats> aggregateStatsMap = usm.queryAndAggregateUsageStats(startTime,endTime);
     return aggregateStatsMap;
@@ -128,25 +132,25 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
 
   // See here for more help:
   // https://github.com/ColeMurray/UsageStatsSample/blob/master/app/src/main/java/com/murraycole/appusagesample/UStats.java
-  public static String printUsageStats(List<UsageStats> usageStatsList){
-    String statsString = new String();
-    statsString = statsString + "hello";
-    for (UsageStats u : usageStatsList){
-      // statsString = statsString + "Pkg: " + u.getPackageName() +  "\t" + "ForegroundTime: "
-      //   + u.getTotalTimeInForeground() + "\n";
-      statsString = statsString + "!";
-    }
-    return statsString;
-  }
+  // public static String printUsageStats(List<UsageStats> usageStatsList){
+  //   String statsString = new String();
+  //   statsString = statsString + "hello";
+  //   for (UsageStats u : usageStatsList){
+  //     // statsString = statsString + "Pkg: " + u.getPackageName() +  "\t" + "ForegroundTime: "
+  //     //   + u.getTotalTimeInForeground() + "\n";
+  //     statsString = statsString + "!";
+  //   }
+  //   return statsString;
+  // }
 
-  public static void printCurrentUsageStatus(Context context){
-    printUsageStats(getUsageStatsList(context));
-  }
-  @SuppressWarnings("ResourceType")
-  private static UsageStatsManager getUsageStatsManager(Context context){
-    UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
-    return usm;
-  }
+  // public static void printCurrentUsageStatus(Context context){
+  //   printUsageStats(getUsageStatsList(context));
+  // }
+  // @SuppressWarnings("ResourceType")
+  // private static UsageStatsManager getUsageStatsManager(Context context){
+  //   UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
+  //   return usm;
+  // }
 
   public static String getStatsString(Map<String, UsageStats> aggregateStats){
 
@@ -183,15 +187,20 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
   public void getStats(
     int durationInDays,
     Callback successCallback) {
-      try {
-        String stats = getStatsString(getAggregateStatsMap(getReactApplicationContext()));
+      if (durationInDays > 0) {
+        try {
+          String stats = getStatsString(getAggregateStatsMap(getReactApplicationContext(), durationInDays));
 
-        List dates = getDates(durationInDays);
+          // List dates = getDates(durationInDays);
 
-        successCallback.invoke(stats);
-      } catch (Exception e) {
-        String errorMessage = e.getMessage();
-        Toast.makeText(getReactApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+          successCallback.invoke(stats);
+        } catch (Exception e) {
+          String errorMessage = e.getMessage();
+          Toast.makeText(getReactApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+        }
+      } else {
+        String noticeMessage = "Enter an integer greater than 0!";
+        Toast.makeText(getReactApplicationContext(), noticeMessage, Toast.LENGTH_SHORT).show();
       }
     }
 

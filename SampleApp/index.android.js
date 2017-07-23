@@ -21,24 +21,42 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  TextInput
 } from 'react-native';
 
 import { NativeModules } from 'react-native';
 const UsageStats = NativeModules.UsageStats;
 
+import _ from 'lodash';
+
 export default class SampleApp extends Component {
   constructor(props) {
     super(props);
-    this.getStats = this.getStats.bind(this);
+    this.getStats = _.debounce(this.getStats.bind(this), 1000);
     this.parseStats = this.parseStats.bind(this);
     this.getStatsComponents = this.getStatsComponents.bind(this);
+    this.updateDuration = this.updateDuration.bind(this);
 
-    this.state = { stats: [] };
-    this.getStats(7);
+    this.state = {
+      stats: [],
+      durationInDays: 7
+    };
+    this.getStats();
   }
 
-  getStats(durationInDays) {
+  updateDuration(val) {
+    let newVal = val;
+    if (!(parseInt(val) >= 0)) {
+      newVal = 0;
+    }
+    this.setState({
+      durationInDays: parseInt(newVal)
+    }, this.getStats);
+  }
+
+  getStats() {
+    const { durationInDays } = this.state;
     UsageStats.getStats(durationInDays, message => {
       const stats = this.parseStats(message);
       this.setState({ stats });
@@ -66,24 +84,19 @@ export default class SampleApp extends Component {
 
   getStatsComponents() {
     const { stats } = this.state;
-    return stats.map((stat, idx) => (
+    return _.sortBy(stats, ['time'])
+      .reverse()
+      .slice(0,5).map((stat, idx) => (
       <Text
         style={styles.stat}
         key={`app-${idx}`}>
-        {`${stat.name}: ${stat.time}`}
+        {`${stat.name}: ${stat.time} ms`}
       </Text>
     ));
   }
 
   render() {
-
-    /*----------------------------------------------
-    | Test that everything is working alright:     |
-    | UsageStats.testToast(UsageStats.SHORT);      |
-    |                                              |
-    |                                              |
-    | console.log(this.state.stats);               |
-    -----------------------------------------------*/
+    const { durationInDays } = this.state;
     return (
       <View style={styles.container}>
         <View>
@@ -91,11 +104,21 @@ export default class SampleApp extends Component {
             UsageStats React Native Module Sample App
           </Text>
           <Text style={styles.instructions}>
-            Duration in foreground statistics for all applications:
+            Duration in foreground (5 most used apps):
           </Text>
         </View>
         <View style={styles.statsContainer}>
           { this.getStatsComponents() }
+        </View>
+        <View style={styles.inputContainer}>
+          <Text>
+            {`Showing the past ${durationInDays} day(s):`}
+          </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={this.updateDuration}
+            value={durationInDays ? durationInDays.toString() : ''}
+            />
         </View>
       </View>
     );
@@ -103,6 +126,25 @@ export default class SampleApp extends Component {
 }
 
 const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    width: 60,
+    borderColor: 'gray',
+    textAlign: 'right',
+    borderWidth: 1,
+    marginTop: 20,
+    marginBottom: 50
+  },
+  inputContainer: {
+    flex: 1,
+    borderColor: 'gray',
+    borderTopWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    width: '100%',
+    marginTop: 100
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
