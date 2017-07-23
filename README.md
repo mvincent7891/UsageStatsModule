@@ -164,7 +164,6 @@ export default class SampleApp extends Component {
   render() {
 
     UsageStats.testToast(UsageStats.SHORT);
-
     return (
       ...
     );
@@ -172,11 +171,15 @@ export default class SampleApp extends Component {
 }
 
 ```
-Start up an emulator and run `react-native run-android` from a terminal. I use [Genymotion](https://www.genymotion.com/account/login/). If everything is working properly, you should see a toast with the message, 'It works!' when the app starts up. 
+Start up an emulator and run `react-native run-android` from a terminal. I use [Genymotion](https://www.genymotion.com/account/login/). If everything is working properly, you should see a toast with the message, 'It works!' when the app starts up.
+
+# Viewing Logs
+With an emulator running, run `adb logcat *:S ReactNative:V ReactNativeJS:V` in a separate terminal app to view console logs.
 
 # Todo
 - [X] Add module
 - [X] Add basic module setup instructions
+- [ ] Find a better way to pass data between Java module and JS
 - [ ] Add methods to UsageStatsModule
     + [ ] getRangeStats()
     + [ ] getPastDayStats()

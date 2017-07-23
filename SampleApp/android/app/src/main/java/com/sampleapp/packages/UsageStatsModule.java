@@ -73,6 +73,12 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     }
   }
 
+  public static List getPastDayDates(){
+    List dates = getDateRangeFromNow(Calendar.DATE, -1);
+
+    return dates;
+  }
+
   public static List getPastWeekDates(){
     List dates = getDateRangeFromNow(Calendar.DATE, -7);
 
@@ -151,24 +157,46 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     return usm;
   }
 
-  public static String myAppStats(Map<String, UsageStats> aggregateStats){
-    String statsString = new String();
+  public static String getStatsString(Map<String, UsageStats> aggregateStats){
+
+    List statsCollection = new ArrayList();
+    List appsCollection = new ArrayList();
+
     for(Map.Entry<String, UsageStats> entry: aggregateStats.entrySet()) {
-        statsString = statsString + entry.getKey() + ":" + entry.getValue().getTotalTimeInForeground() + ";";
+        appsCollection.add(entry.getValue().getPackageName());
+        statsCollection.add(entry.getValue().getTotalTimeInForeground());
     }
-    return statsString;
+
+    String stats = joinStringList(",", statsCollection);;
+    String apps = joinStringList(",", appsCollection);;
+
+    String res = apps + ";" + stats;
+
+    return res;
+  }
+
+  public static String joinStringList(String joiner, List items){
+    String joined = new String();
+
+    for(int i = 0; i < items.size(); i++) {
+      joined += items.get(i);
+      if(i < items.size() - 1){
+        joined += joiner;
+      }
+    }
+
+    return joined;
   }
 
   @ReactMethod
-  public void showStats(
-    int duration,
+  public void getStats(
     Callback successCallback) {
       try {
-        String message = myAppStats(getAggregateStatsMap(getReactApplicationContext()));
-        successCallback.invoke(message);
+        String stats = getStatsString(getAggregateStatsMap(getReactApplicationContext()));
+        successCallback.invoke(stats);
       } catch (Exception e) {
-        String error = e.getMessage();
-        Toast.makeText(getReactApplicationContext(), error, duration).show();
+        String errorMessage = e.getMessage();
+        Toast.makeText(getReactApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
       }
     }
 
