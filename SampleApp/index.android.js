@@ -35,11 +35,11 @@ export default class SampleApp extends Component {
     this.getStatsComponents = this.getStatsComponents.bind(this);
 
     this.state = { stats: [] };
-    this.getStats();
+    this.getStats(7);
   }
 
-  getStats() {
-    UsageStats.getStats(message => {
+  getStats(durationInDays) {
+    UsageStats.getStats(durationInDays, message => {
       const stats = this.parseStats(message);
       this.setState({ stats });
     });

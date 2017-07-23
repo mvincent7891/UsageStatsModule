@@ -73,31 +73,14 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     }
   }
 
-  public static List getPastDayDates(){
-    List dates = getDateRangeFromNow(Calendar.DATE, -1);
+  public List getDates(int durationInDays){
+    List dates = getDateRangeFromNow(Calendar.DATE, -(durationInDays));
 
     return dates;
   }
 
-  public static List getPastWeekDates(){
-    List dates = getDateRangeFromNow(Calendar.DATE, -7);
-
-    return dates;
-  }
-
-  public static List getPastMonthDates(){
-    List dates = getDateRangeFromNow(Calendar.MONTH, -1);
-
-    return dates;
-  }
-
-  public static List getPastYearDates(){
-    List dates = getDateRangeFromNow(Calendar.YEAR, -1);
-
-    return dates;
-  }
-
-  public static List getDateRangeFromNow(int field, int amount){
+  public List getDateRangeFromNow(int field, int amount){
+  // public static List getDateRangeFromNow(int field, int amount){
     List dates = new ArrayList();
     Calendar calendar = Calendar.getInstance();
     long endTime = calendar.getTimeInMillis();
@@ -108,7 +91,9 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     // TESTING 1 2 3...
     SimpleDateFormat formatOne = new SimpleDateFormat("yyyy-MM-dd");
     String dateOne = formatOne.format(startTime);
+    String dateTwo = formatOne.format(endTime);
     Toast.makeText(getReactApplicationContext(), dateOne, Toast.LENGTH_SHORT).show();
+    Toast.makeText(getReactApplicationContext(), dateTwo, Toast.LENGTH_SHORT).show();
 
     dates.add(startTime);
     dates.add(endTime);
@@ -196,11 +181,13 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void getStats(
+    int durationInDays,
     Callback successCallback) {
       try {
         String stats = getStatsString(getAggregateStatsMap(getReactApplicationContext()));
 
-        List dates = getPastDayDates();
+        List dates = getDates(durationInDays);
+
         successCallback.invoke(stats);
       } catch (Exception e) {
         String errorMessage = e.getMessage();
