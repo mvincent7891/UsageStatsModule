@@ -20,6 +20,7 @@ export default class SampleApp extends Component {
     super(props);
     this.getStats = this.getStats.bind(this);
     this.parseStats = this.parseStats.bind(this);
+    this.getStatsComponents = this.getStatsComponents.bind(this);
 
     this.state = { stats: [] };
     this.getStats();
@@ -51,17 +52,33 @@ export default class SampleApp extends Component {
     return stats;
   }
 
+  getStatsComponents() {
+    const { stats } = this.state;
+    return stats.map((stat, idx) => (
+      <Text
+        style={styles.stat}
+        key={`app-${idx}`}>
+        {`${stat.name}: ${stat.time}`}
+      </Text>
+    ));
+  }
+
   render() {
     // UsageStats.testToast(UsageStats.SHORT);
     // console.log(this.state.stats);
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          UsageStats React Native Module Sample App
-        </Text>
-        <Text style={styles.instructions}>
-          Instructions coming soon...
-        </Text>
+        <View>
+          <Text style={styles.welcome}>
+            UsageStats React Native Module Sample App
+          </Text>
+          <Text style={styles.instructions}>
+            Duration in foreground statistics for all applications:
+          </Text>
+        </View>
+        <View style={styles.statsContainer}>
+          { this.getStatsComponents() }
+        </View>
       </View>
     );
   }
@@ -72,6 +89,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    marginTop: 100
+  },
+  statsContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     backgroundColor: '#F5FCFF',
   },
   welcome: {
@@ -84,6 +108,11 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  stat: {
+    textAlign: 'left',
+    color: '#777777',
+    marginTop: 5,
+  }
 });
 
 AppRegistry.registerComponent('SampleApp', () => SampleApp);
