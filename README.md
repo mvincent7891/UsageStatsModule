@@ -1,11 +1,11 @@
-# UsageStatsModule
+# UsageStatsModule [WIP]
 A sample React Native application demonstrating the use of [Modules](https://facebook.github.io/react-native/docs/native-modules-android.html) to make the Android platform's [UsageStats](https://developer.android.com/reference/android/app/usage/UsageStats.html) class available from within your JavaScript code. Quickly obtain statistics on app usage over the past day, week or month.
 
 Environment and sample application were setup using the React Native tutorial [here](https://facebook.github.io/react-native/docs/getting-started.html).
 
-Another resource I've used here is Cole Murray's [UsageStatsSample](https://github.com/ColeMurray/UsageStatsSample).
+The Java resource I used as a guide is Cole Murray's [UsageStatsSample](https://github.com/ColeMurray/UsageStatsSample).
 
-# Setup [WIP]
+# Setup
 
 ## Add Module
 We'll start by creating the module:
@@ -130,9 +130,9 @@ protected void onCreate(Bundle savedInstanceState) {
 ...
 
 ```
+Finally, the above won't be helpful unless we've add the necessities to our manifest...
 
 ## AndroidManifest.xml
-+ Add permissions
 ```xml
 <!---android/app/src/main/AndroidManifest.xml--->
 
@@ -152,6 +152,13 @@ protected void onCreate(Bundle savedInstanceState) {
 ```
 
 # Todo
-- [ ] Add module
-- [ ] Add basic module setup instructions and examples
+- [X] Add module
+- [X] Add basic module setup instructions
+- [ ] Add methods to UsageStatsModule
+    + [ ] getRange()
+    + [ ] getPastDay()
+    + [ ] getPastWeek()
+    + [ ] getPastMonth()
+- [ ] Add example method calls
+- [ ] Enable sample method calls from React Native app
 - [ ] Add sample React Native application using module
