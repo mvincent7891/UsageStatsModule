@@ -4,6 +4,18 @@
  * @flow
  */
 
+ /*-------------------------------------------------\
+ |                                                  |
+ | UsageStatsModule                                 |
+ | Sample app extended by Michael Parlato           |
+ | Source code:                                     |
+ | https://github.com/mvincent7891/UsageStatsModule |
+ |                                                  |
+ | Credit to Cole Murray:                           |
+ | https://github.com/ColeMurray/UsageStatsSample   |
+ |                                                  |
+ \-------------------------------------------------*/
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -64,8 +76,14 @@ export default class SampleApp extends Component {
   }
 
   render() {
-    // UsageStats.testToast(UsageStats.SHORT);
-    // console.log(this.state.stats);
+
+    /*----------------------------------------------
+    | Test that everything is working alright:     |
+    | UsageStats.testToast(UsageStats.SHORT);      |
+    |                                              |
+    |                                              |
+    | console.log(this.state.stats);               |
+    -----------------------------------------------*/
     return (
       <View style={styles.container}>
         <View>
@@ -89,14 +107,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
     marginTop: 100
   },
   statsContainer: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    backgroundColor: '#F5FCFF',
+    alignItems: 'flex-start'
   },
   welcome: {
     fontSize: 20,
