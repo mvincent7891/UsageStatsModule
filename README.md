@@ -1,8 +1,11 @@
 # UsageStatsModule
 A sample React Native application demonstrating the use of [Modules](https://facebook.github.io/react-native/docs/native-modules-android.html) to make the Android platform's [UsageStats](https://developer.android.com/reference/android/app/usage/UsageStats.html) class available from within your JavaScript code. Quickly obtain statistics on app usage over the past day, week or month.
 
-# Setup [WIP]
 Environment and sample application were setup using the React Native tutorial [here](https://facebook.github.io/react-native/docs/getting-started.html).
+
+Another resource I've used here is Cole Murray's [UsageStatsSample](https://github.com/ColeMurray/UsageStatsSample).
+
+# Setup [WIP]
 
 ## Add Module
 We'll start by creating the module:
@@ -33,10 +36,10 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
 }
 
 ```
-+ You'll need to copy the full module from the same location in this repo. 
+You'll need to copy the full module from the same location in this repo.
 
 ## Create Package
-+ In the `packages` folder you've just created we'll create a package comprised of this module (and any others you'd like to include)
+In the `packages` folder you've just created we'll create a package comprised of this module (and any others you'd like to include)
 ```java
 // android/app/src/main/java/com/sampleapp/packages/ModulesPackage.java
 
@@ -77,8 +80,10 @@ public class ModulesPackage implements ReactPackage {
 ```
 
 ## MainApplication
-+ We'll make the package available in `MainApplication.java`
+We'll make the package available in `MainApplication.java`, like so:
 ```java
+// android/app/src/main/java/com/sampleapp/MainApplication.java
+
 package com.sampleapp;
 
 import com.sampleapp.packages.*;
@@ -102,10 +107,29 @@ public class MainApplication extends Application implements ReactApplication {
   ...
 }
 ```
-+ Again, note that only relevant code is shown for brevity; the above will not make a complete `MainApplication` class
+Again, note that only relevant code is shown for brevity's sake; the above will not make a complete `MainApplication` class
 
 ## MainActivity
-+ Check for permissions
+When the main activity starts, we'll want to ensure the app has the appropriate permissions turned on. I'm sure there is a better way to do this, but I'm using [this](https://github.com/ColeMurray/UsageStatsSample) as a guide, so we'll just check whether one of our methods returns an empty `List`:
+```java
+// android/app/src/main/java/com/sampleapp/MainActivity.java
+
+...
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    //Check if permission enabled
+    if (UsageStatsModule.getUsageStatsList(this).isEmpty()){
+        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        startActivity(intent);
+    }
+}
+
+...
+
+```
 
 ## AndroidManifest.xml
 + Add permissions
