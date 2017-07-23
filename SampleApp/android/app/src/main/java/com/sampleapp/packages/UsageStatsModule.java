@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Calendar;
 import java.util.List;
+import java.util.ArrayList;
 
 public class UsageStatsModule extends ReactContextBaseJavaModule {
 
@@ -70,6 +71,37 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
         Log.d(TAG, "Event: " + e.getPackageName() + "\t" +  e.getTimeStamp());
       }
     }
+  }
+
+  public static List<long> getPastWeekDates(){
+    List<long> dates = getDateRangeFromNow(Calendar.DATE, -7);
+
+    return dates;
+  }
+
+  public static List<long> getPastMonthDates(){
+    List<long> dates = getDateRangeFromNow(Calendar.MONTH, -1);
+
+    return dates;
+  }
+
+  public static List<long> getPastYearDates(){
+    List<long> dates = getDateRangeFromNow(Calendar.YEAR, -1);
+
+    return dates;
+  }
+
+  public static List<long> getDateRangeFromNow(int field, int amount){
+    List<long> dates = new ArrayList<>();
+    Calendar calendar = Calendar.getInstance();
+    long endTime = calendar.getTimeInMillis();
+    calendar.add(field, amount);
+    long startTime = calendar.getTimeInMillis();
+
+    dates.add(startTime);
+    dates.add(endTime);
+
+    return dates;
   }
 
   public static List<UsageStats> getUsageStatsList(Context context){
