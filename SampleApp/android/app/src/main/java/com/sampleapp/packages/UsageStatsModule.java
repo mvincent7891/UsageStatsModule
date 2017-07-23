@@ -73,26 +73,26 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     }
   }
 
-  public static List<long> getPastWeekDates(){
-    List<long> dates = getDateRangeFromNow(Calendar.DATE, -7);
+  public static List getPastWeekDates(){
+    List dates = getDateRangeFromNow(Calendar.DATE, -7);
 
     return dates;
   }
 
-  public static List<long> getPastMonthDates(){
-    List<long> dates = getDateRangeFromNow(Calendar.MONTH, -1);
+  public static List getPastMonthDates(){
+    List dates = getDateRangeFromNow(Calendar.MONTH, -1);
 
     return dates;
   }
 
-  public static List<long> getPastYearDates(){
-    List<long> dates = getDateRangeFromNow(Calendar.YEAR, -1);
+  public static List getPastYearDates(){
+    List dates = getDateRangeFromNow(Calendar.YEAR, -1);
 
     return dates;
   }
 
-  public static List<long> getDateRangeFromNow(int field, int amount){
-    List<long> dates = new ArrayList<>();
+  public static List getDateRangeFromNow(int field, int amount){
+    List dates = new ArrayList();
     Calendar calendar = Calendar.getInstance();
     long endTime = calendar.getTimeInMillis();
     calendar.add(field, amount);
