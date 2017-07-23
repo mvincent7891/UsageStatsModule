@@ -6,15 +6,12 @@ Environment and sample application were setup using the React Native tutorial [h
 
 ## Add Module
 We'll start by creating the module:
-```
+```java
 // android/app/src/main/java/com/sampleapp/packages/UsageStatsModule.java
 
 package com.sampleapp.packages;
 
-import com.facebook.react.bridge.NativeModule;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
+...
 
 public class UsageStatsModule extends ReactContextBaseJavaModule {
 
@@ -32,17 +29,80 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void getSomeStats() {
       ...
-    }
+  }
 }
 
 ```
++ You'll need to copy the full module from the same location in this repo. 
 
 ## Create Package
-+ Create modules package
-+ Add module to package
++ In the `packages` folder you've just created we'll create a package comprised of this module (and any others you'd like to include)
+```java
+// android/app/src/main/java/com/sampleapp/packages/ModulesPackage.java
+
+package com.sampleapp.packages;
+
+import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.JavaScriptModule;
+import com.facebook.react.bridge.NativeModule;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.uimanager.ViewManager;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class ModulesPackage implements ReactPackage {
+  @Override
+  public List<Class<? extends JavaScriptModule>> createJSModules() {
+    return Collections.emptyList();
+  }
+
+  @Override
+  public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+    return Collections.emptyList();
+  }
+
+  @Override
+  public List<NativeModule> createNativeModules(
+                              ReactApplicationContext reactContext) {
+    List<NativeModule> modules = new ArrayList<>();
+
+    modules.add(new UsageStatsModule(reactContext));
+    // Add any other modules you'd like here
+
+    return modules;
+  }
+}
+```
 
 ## MainApplication
-+ Add modules package
++ We'll make the package available in `MainApplication.java`
+```java
+package com.sampleapp;
+
+import com.sampleapp.packages.*;
+
+...
+
+public class MainApplication extends Application implements ReactApplication {
+
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    ...
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+          new MainReactPackage(),
+          new ModulesPackage()
+      );
+    }
+  };
+
+  ...
+}
+```
++ Again, note that only relevant code is shown for brevity; the above will not make a complete `MainApplication` class
 
 ## MainActivity
 + Check for permissions
@@ -56,7 +116,7 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     xmlns:tools="http://schemas.android.com/tools"
     ...
     />
-    
+
 ...
 
 <uses-permission
