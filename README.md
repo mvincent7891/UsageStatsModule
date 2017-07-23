@@ -1,7 +1,7 @@
 # UsageStatsModule [WIP]
 The repo contains a sample React Native application demonstrating the use of [Modules](https://facebook.github.io/react-native/docs/native-modules-android.html) to make the Android platform's [UsageStats](https://developer.android.com/reference/android/app/usage/UsageStats.html) class available from within your JavaScript code. Quickly obtain statistics on app usage over the past day, week, month or custom range.
 
-<img src="./Screenshots/screenshot_1.png" alt="Screenshot" style="width: 150px;"/>
+<img src="./Screenshots/screenshot_1.png" alt="Screenshot" style="width: 50%;"/>
 
 Environment and sample application were setup using the React Native tutorial [here](https://facebook.github.io/react-native/docs/getting-started.html).
 
