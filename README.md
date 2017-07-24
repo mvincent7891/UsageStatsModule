@@ -178,9 +178,30 @@ Start up an emulator and run `react-native run-android` from a terminal. I use [
 # Viewing Logs
 With an emulator running, run `adb logcat *:S ReactNative:V ReactNativeJS:V` in a separate terminal app to view console logs.
 
+# Notes
+- [On strange results](https://stackoverflow.com/questions/30386789/android-usagestatsmanager-producing-wrong-output):
+```
+According to google release documentation.
+(https://developer.android.com/about/versions/android-5.0.html#System)
+
+The system collects the usage data on a per-app basis, aggregating the data over daily, weekly, monthly, and yearly intervals. The maximum duration that the system keeps this data is as follows:
+
+Daily data: 7 days
+
+Weekly data: 4 weeks
+
+Monthly data: 6 months
+
+Yearly data: 2 years
+
+If you want to get stats for older than 7 seven days changes time interval from INTERVAL_DAILY to INTERVAL_WEEKLY or INTERVAL_YEARLY. here is more detail about the same.
+```
+
+
 # Todo
 - [X] Add module
 - [X] Add basic module setup instructions
+- [ ] Figure out what number is actually being returned by `queryAndAggregateUsageStats`
 - [ ] Find a better way to pass data between Java module and JS
 - [ ] Add methods to UsageStatsModule
     + [ ] getRangeStats()

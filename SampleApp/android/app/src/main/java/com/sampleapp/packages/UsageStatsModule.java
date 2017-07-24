@@ -50,28 +50,28 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
 
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("M-d-yyyy HH:mm:ss");
   public static final String TAG = UsageStatsModule.class.getSimpleName();
-  @SuppressWarnings("ResourceType")
-  public static void getStats(Context context){
-    UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
-    int interval = UsageStatsManager.INTERVAL_YEARLY;
-    Calendar calendar = Calendar.getInstance();
-    long endTime = calendar.getTimeInMillis();
-    calendar.add(Calendar.YEAR, -1);
-    long startTime = calendar.getTimeInMillis();
-
-    Log.d(TAG, "Range start:" + dateFormat.format(startTime) );
-    Log.d(TAG, "Range end:" + dateFormat.format(endTime));
-
-    UsageEvents uEvents = usm.queryEvents(startTime,endTime);
-    while (uEvents.hasNextEvent()){
-      UsageEvents.Event e = new UsageEvents.Event();
-      uEvents.getNextEvent(e);
-
-      if (e != null){
-        Log.d(TAG, "Event: " + e.getPackageName() + "\t" +  e.getTimeStamp());
-      }
-    }
-  }
+  // @SuppressWarnings("ResourceType")
+  // public static void getStats(Context context){
+  //   UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
+  //   int interval = UsageStatsManager.INTERVAL_YEARLY;
+  //   Calendar calendar = Calendar.getInstance();
+  //   long endTime = calendar.getTimeInMillis();
+  //   calendar.add(Calendar.YEAR, -1);
+  //   long startTime = calendar.getTimeInMillis();
+  //
+  //   Log.d(TAG, "Range start:" + dateFormat.format(startTime) );
+  //   Log.d(TAG, "Range end:" + dateFormat.format(endTime));
+  //
+  //   UsageEvents uEvents = usm.queryEvents(startTime,endTime);
+  //   while (uEvents.hasNextEvent()){
+  //     UsageEvents.Event e = new UsageEvents.Event();
+  //     uEvents.getNextEvent(e);
+  //
+  //     if (e != null){
+  //       Log.d(TAG, "Event: " + e.getPackageName() + "\t" +  e.getTimeStamp());
+  //     }
+  //   }
+  // }
 
   public static List getDates(int durationInDays){
     List dates = getDateRangeFromNow(Calendar.DATE, -(durationInDays));
@@ -126,7 +126,7 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     long startTime = (long)dates.get(0);
     long endTime = (long)dates.get(1);
 
-    Map<String, UsageStats> aggregateStatsMap = usm.queryAndAggregateUsageStats(startTime,endTime);
+    Map<String, UsageStats> aggregateStatsMap = usm.queryAndAggregateUsageStats(startTime, endTime);
     return aggregateStatsMap;
   }
 
