@@ -127,7 +127,7 @@ export default class SampleApp extends Component {
 
 const styles = StyleSheet.create({
   input: {
-    height: 40,
+    height: 400,
     width: 60,
     borderColor: 'gray',
     textAlign: 'right',
