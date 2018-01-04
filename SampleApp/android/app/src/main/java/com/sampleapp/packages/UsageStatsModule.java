@@ -101,19 +101,19 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     return dates;
   }
 
-  // public static List<UsageStats> getUsageStatsList(Context context){
-  //   UsageStatsManager usm = getUsageStatsManager(context);
-  //   Calendar calendar = Calendar.getInstance();
-  //   long endTime = calendar.getTimeInMillis();
-  //   calendar.add(Calendar.YEAR, -1);
-  //   long startTime = calendar.getTimeInMillis();
-  //
-  //   Log.d(TAG, "Range start:" + dateFormat.format(startTime) );
-  //   Log.d(TAG, "Range end:" + dateFormat.format(endTime));
-  //
-  //   List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,startTime,endTime);
-  //   return usageStatsList;
-  // }
+  public static List<UsageStats> getUsageStatsList(Context context){
+    UsageStatsManager usm = getUsageStatsManager(context);
+    Calendar calendar = Calendar.getInstance();
+    long endTime = calendar.getTimeInMillis();
+    calendar.add(Calendar.YEAR, -1);
+    long startTime = calendar.getTimeInMillis();
+  
+    Log.d(TAG, "Range start:" + dateFormat.format(startTime) );
+    Log.d(TAG, "Range end:" + dateFormat.format(endTime));
+  
+    List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,startTime,endTime);
+    return usageStatsList;
+  }
 
   public static Map<String, UsageStats> getAggregateStatsMap(Context context, int durationInDays){
     UsageStatsManager usm = getUsageStatsManager(context);
@@ -146,11 +146,11 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
   // public static void printCurrentUsageStatus(Context context){
   //   printUsageStats(getUsageStatsList(context));
   // }
-  // @SuppressWarnings("ResourceType")
-  // private static UsageStatsManager getUsageStatsManager(Context context){
-  //   UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
-  //   return usm;
-  // }
+  @SuppressWarnings("ResourceType")
+  private static UsageStatsManager getUsageStatsManager(Context context){
+    UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
+    return usm;
+  }
 
   public static String getStatsString(Map<String, UsageStats> aggregateStats){
 
