@@ -28,6 +28,11 @@ public class MainApplication extends Application implements ReactApplication {
           new ModulesPackage()
       );
     }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index.android";
+    }
   };
 
   @Override
